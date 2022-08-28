@@ -70,7 +70,7 @@ jobs:
 
 
         # Reinstall linux pkg so whe have modules back as needed
-        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "bottle --needed --noconfirm --disable-download-timeout -Sy linux linux-firmware"
+        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "bottle --noconfirm --disable-download-timeout -Sy linux linux-firmware"
         
     - name: Build ISO
       run: |
