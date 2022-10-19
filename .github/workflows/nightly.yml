@@ -1,4 +1,4 @@
-name: Nightly ISO
+name: Nightly ISO ( AMD64 )
 
 on:
     schedule:
