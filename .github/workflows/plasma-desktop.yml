@@ -75,7 +75,7 @@ jobs:
     - name: Build ISO
       run: |
         # Build the packages in docker env
-        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 su developer -c "cd ~/DRUNK && ./drunk --plasma --mkiso-clean-cli"
+        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 su developer -c "cd ~/DRUNK && ./drunk --mkiso-plasma-clean-cli"
 
     - name: Upload iso
       uses: actions/upload-artifact@v3
