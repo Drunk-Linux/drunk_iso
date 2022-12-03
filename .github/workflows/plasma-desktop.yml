@@ -1,4 +1,4 @@
-name: Nightly ISO ( AMD64 )
+name: Plasma-Desktop ISO ( AMD64 )
 
 on:
     schedule:
