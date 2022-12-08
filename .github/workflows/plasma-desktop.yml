@@ -27,13 +27,13 @@ jobs:
         # Clone and install required deps
         mkdir -p ~/DRUNK
         cd ~/DRUNK
-        git clone https://git.it-kuny.ch/drunk/setup.git setup --depth=10
+        git clone https://git.it-kuny.ch/drunk/tools.git tools --depth=10
         git clone https://git.it-kuny.ch/drunk/drunk-pkgbuild.git -b sober pkgbuild --depth=50
-        ln -sf setup/drunk.sh drunk
+        ln -sf tools/drunk.sh drunk
 
         # Now prepare drunk build env
         # As were running in ubuntu env then we need to bypass normal checks of script
-        touch setup/checks/is_checked
+        touch tools/checks/is_checked
         
     - name: Setup docker
       run: |
@@ -58,13 +58,13 @@ jobs:
 
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "rm -rf /var/lib/bottle/sync/*"
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "useradd developer -m -g wheel"
-        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "bash -c /home/developer/DRUNK/setup/docker/developer.sh"
-        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "cp -f /home/developer/DRUNK/setup/docker/bottle.conf /etc/bottle.conf"
+        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "bash -c /home/developer/DRUNK/tools/docker/developer.sh"
+        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "cp -f /home/developer/DRUNK/tools/docker/bottle.conf /etc/bottle.conf"
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "bottle -Syu --needed --noconfirm --disable-download-timeout"
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "bash -c /home/developer/DRUNK/setup/docker/developer.sh"
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "bottle --needed --noconfirm --disable-download-timeout -Sy sudo nano mpfr mpc base-devel m4 git libisoburn dialog syslinux drunk-install-scripts dracut linux linux-firmware"
-        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "bash -c /home/developer/DRUNK/setup/docker/fix_sudo.sh"
-        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "bash -c /home/developer/DRUNK/setup/docker/locale.sh"
+        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "bash -c /home/developer/DRUNK/tools/docker/fix_sudo.sh"
+        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "bash -c /home/developer/DRUNK/tools/docker/locale.sh"
         
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "chown -R developer /home/developer/DRUNK"
 
