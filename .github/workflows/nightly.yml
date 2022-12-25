@@ -18,10 +18,12 @@ jobs:
         mkdir -p ~/DRUNK
         cd ~/DRUNK
         git clone https://git.martinvlba.eu/DrunkOS/tools.git tools --depth=10
+        
         ln -sf tools/drunk.sh drunk
 
         # Now prepare drunk build env
         # As were running in ubuntu env then we need to bypass normal checks of script
+        mkdir -p tools/checks
         touch tools/checks/is_checked
         
     - name: Setup docker
