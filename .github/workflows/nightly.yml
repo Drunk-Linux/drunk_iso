@@ -17,8 +17,7 @@ jobs:
         # Clone and install required deps
         mkdir -p ~/DRUNK
         cd ~/DRUNK
-        git clone https://git.it-kuny.ch/drunk/tools.git tools --depth=10
-        git clone https://git.it-kuny.ch/drunk/drunk-pkgbuild.git -b sober pkgbuild --depth=50
+        git clone https://git.martinvlba.eu/DrunkOS/tools.git tools --depth=10
         ln -sf tools/drunk.sh drunk
 
         # Now prepare drunk build env
