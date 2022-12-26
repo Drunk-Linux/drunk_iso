@@ -13,13 +13,17 @@ jobs:
     steps:
     - name: Clean up workflow env
       run: |
-        # Free up space ( for this workflow )
-        sudo apt purge -yq $(dpkg -l | grep '^ii' | awk '{ print $2 }' | grep -P '(cabal-|dotnet-|ghc-|libmono|php)') \
-        liblldb-6.0 libllvm6.0:amd64 mono-runtime-common monodoc-manual powershell ruby
+        # Basics
+        # Clone and install required deps
+        mkdir -p ~/DRUNK
+        cd ~/DRUNK
+        git clone https://git.martinvlba.eu/DrunkOS/tools.git tools --depth=10
         
-        sudo apt autoremove -yq
-
-        sudo rm -rf /opt/hostedtoolcache /usr/local /usr/share/dotnet /usr/share/swift
+        ln -sf tools/drunk.sh drunk
+        # Now prepare drunk build env
+        # As were running in ubuntu env then we need to bypass normal checks of script
+        mkdir -p tools/checks
+        touch tools/checks/is_checked
         
     - name: prepare build env
       run: |
@@ -39,10 +43,8 @@ jobs:
       run: |
         cd ~/DRUNK
         export P_ROOT=$(pwd)
-
         # Pull drunk docker image and make new container of it
         sudo docker pull hilledkinged/drunk:latest
-
         docker container create \
         --name work01 \
         --volume $P_ROOT:/home/developer/DRUNK \
@@ -51,6 +53,7 @@ jobs:
         --device=/dev/loop-control:/dev/loop-control \
         --device=/dev/loop0:/dev/loop0 \
         hilledkinged/drunk /bin/bash
+        
 
         sleep 1
         sudo docker start work01 >/dev/null
@@ -61,7 +64,7 @@ jobs:
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "bash -c /home/developer/DRUNK/tools/docker/developer.sh"
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "cp -f /home/developer/DRUNK/tools/docker/bottle.conf /etc/bottle.conf"
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "bottle -Syu --needed --noconfirm --disable-download-timeout"
-        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "bash -c /home/developer/DRUNK/setup/docker/developer.sh"
+        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "bash -c /home/developer/DRUNK/tools/docker/developer.sh"
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "bottle --needed --noconfirm --disable-download-timeout -Sy sudo nano mpfr mpc base-devel m4 git libisoburn dialog syslinux drunk-install-scripts dracut linux linux-firmware"
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "bash -c /home/developer/DRUNK/tools/docker/fix_sudo.sh"
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "bash -c /home/developer/DRUNK/tools/docker/locale.sh"
