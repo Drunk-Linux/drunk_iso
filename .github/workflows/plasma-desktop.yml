@@ -56,8 +56,6 @@ jobs:
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "bash -c /home/developer/DRUNK/tools/docker/locale.sh"
         
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "chown -R developer /home/developer/DRUNK"
-
-
         # Reinstall linux pkg so whe have modules back as needed
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin work01 /bin/bash -c "bottle --noconfirm --disable-download-timeout -Sy linux linux-firmware"
         
