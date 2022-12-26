@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
     steps:
-    - name: Clean up workflow env
+    - name: prepare build env
       run: |
         # Basics
         # Clone and install required deps
@@ -23,20 +23,6 @@ jobs:
         # Now prepare drunk build env
         # As were running in ubuntu env then we need to bypass normal checks of script
         mkdir -p tools/checks
-        touch tools/checks/is_checked
-        
-    - name: prepare build env
-      run: |
-        # Basics
-        # Clone and install required deps
-        mkdir -p ~/DRUNK
-        cd ~/DRUNK
-        git clone https://git.it-kuny.ch/drunk/tools.git tools --depth=10
-        git clone https://git.it-kuny.ch/drunk/drunk-pkgbuild.git -b sober pkgbuild --depth=50
-        ln -sf tools/drunk.sh drunk
-
-        # Now prepare drunk build env
-        # As were running in ubuntu env then we need to bypass normal checks of script
         touch tools/checks/is_checked
         
     - name: Setup docker
